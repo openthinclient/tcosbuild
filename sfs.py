@@ -24,9 +24,9 @@ if os.path.isfile('mksquashfs.actions'):
     logger.debug('using mksquashfs.actions')
     MKSQUASHFS_OPTS += ['-action-file', 'mksquashfs.actions']
 
-def build_sfs():
-    sfs_data_path = f".build/{package_name}/squashfs-data"
+sfs_data_path = f".build/{package_name}/squashfs-data"
 
+def build_sfs_data():
     os.makedirs(sfs_data_path, exist_ok=True)
     shutil.rmtree(sfs_data_path, ignore_errors=True)
 
@@ -52,6 +52,9 @@ def build_sfs():
     shutil.copy2('debian/changelog',
                  f'{sfs_data_path}/tcos/changelogs/{package_name}.changelog')
 
+
+def build_sfs():
+    build_sfs_data()
     pre_squash_hook()
 
     run(['mksquashfs', sfs_data_path,

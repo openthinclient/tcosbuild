@@ -6,9 +6,9 @@ import logging
 
 from package_data import build_package_data
 from project import package_name, version, build_path
-from sfs import build_sfs
+from sfs import build_sfs, build_sfs_data
 from deb import build_deb
-from install import initialize_install_arg_parser, install
+from install import client_install, initialize_install_arg_parser, install
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -39,6 +39,9 @@ if __name__ == '__main__':
     subparsers.add_parser('clean', help='clean build artifacts')
     install_parser = subparsers.add_parser('install', help='install to server')
     initialize_install_arg_parser(install_parser)
+    client_install_parser = subparsers.add_parser('client_install',
+                                                  help='install to client')
+    initialize_install_arg_parser(client_install_parser)
 
     args = parser.parse_args()
 
@@ -56,3 +59,8 @@ if __name__ == '__main__':
             build_sfs()
             build_package_data()
             install(args)
+        case 'client_install':
+            build_sfs_data()
+            client_install(args)
+
+
