@@ -7,7 +7,7 @@ from project import build_path
 
 DEFAULT_INSTALL_PATH = '/home/openthinclient/otc-manager-home/nfs/root'
 DEFAULT_CLIENT_INSTALL_PATH = '/'
-SSH_OPTS = '-oStrictHostKeyChecking=no'
+SSH_OPTS = ['-oStrictHostKeyChecking=no', '-oUserKnownHostsFile=/dev/null']
 
 def initialize_install_arg_parser(parser: argparse.ArgumentParser):
     parser.add_argument('destination', help='user@host')
@@ -17,9 +17,12 @@ def initialize_install_arg_parser(parser: argparse.ArgumentParser):
 def _install(destination, path, password):
     sshpass = ['sshpass', '-p', password] if password else []
 
-    run([*sshpass, 'rsync', '-r', '.', f'{destination}:/tmp/package'])
+    run([*sshpass, 'rsync',
+        '-r', '.',
+        f'{destination}:/tmp/package',
+        '-e', 'ssh ' + ' '.join(SSH_OPTS)])
 
-    run([*sshpass, 'ssh', destination,
+    run([*sshpass, 'ssh', *SSH_OPTS, destination,
         f'cd "{path}";'
         'sudo cp -rv /tmp/package/. .;'
         'rm -rf /tmp/package'])
