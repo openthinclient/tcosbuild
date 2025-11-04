@@ -38,7 +38,8 @@ def build_sfs_data():
                             dirs_exist_ok=True, symlinks=True)
 
     if os.path.isdir('tcos'):
-        shutil.copytree('tcos', f'{sfs_data_path}/opt/{name}/tcos')
+        shutil.copytree('tcos', f'{sfs_data_path}/opt/{name}/tcos',
+                        symlinks=True)
 
     if os.path.isdir('schema'):
         shutil.copytree('schema', f'{sfs_data_path}/tcos/schema')
