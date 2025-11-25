@@ -8,7 +8,7 @@ from package_data import build_package_data
 from project import package_name, version, build_path
 from sfs import build_sfs, build_sfs_data
 from deb import build_deb
-from install import client_install, initialize_install_arg_parser, install
+from install import Installer
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -38,10 +38,10 @@ if __name__ == '__main__':
     subparsers.add_parser('deb', help='build deb')
     subparsers.add_parser('clean', help='clean build artifacts')
     install_parser = subparsers.add_parser('install', help='install to server')
-    initialize_install_arg_parser(install_parser)
+    Installer.initialize_arg_parser(install_parser)
     client_install_parser = subparsers.add_parser('client_install',
                                                   help='install to client')
-    initialize_install_arg_parser(client_install_parser)
+    Installer.initialize_arg_parser(client_install_parser)
 
     args = parser.parse_args()
 
@@ -58,9 +58,9 @@ if __name__ == '__main__':
         case 'install':
             build_sfs()
             build_package_data()
-            install(args)
+            Installer(args).install()
         case 'client_install':
             build_sfs_data()
-            client_install(args)
+            Installer(args).client_install()
 
 

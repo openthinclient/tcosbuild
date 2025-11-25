@@ -7,7 +7,7 @@ from project import package_name, build_path, name
 def build_package_data():
     package_data_dir = build_path / 'package-data'
 
-    sfs_package_dir = package_data_dir / 'sfs' / 'package'
+    sfs_package_dir = package_data_dir / 'packages' / f'{package_name}'
     sfs_package_dir.mkdir(parents=True)
     shutil.copy2(f'.build/{package_name}/{name}.sfs', sfs_package_dir)
     shutil.copy2(build_path / 'changelog',
