@@ -32,7 +32,7 @@ def build_sfs_data():
 
     pre_squash_copy_hook()
 
-    for path in glob.glob("package-rootfs*"):
+    for path in sorted(glob.glob("package-rootfs*")):
         if os.path.isdir(path):
             shutil.copytree(f'{path}/.', sfs_data_path,
                             dirs_exist_ok=True, symlinks=True)
